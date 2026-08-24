@@ -1,26 +1,193 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    Helvetica, Arial, sans-serif;
+
+  --color-page-backdrop: #d3dffc;
+  --color-frame-tint: rgb(244 245 247 / 30%);
+  --color-canvas-reference: #dde6fb;
+  --color-surface: #ffffff;
+  --color-sidebar-surface: rgb(255 255 255 / 80%);
+  --color-promo-surface: #ebeeff;
+  --color-chart-track: #eff3fe;
+
+  --color-text-strong: #000000;
+  --color-text-primary: #121212;
+  --color-text-heading: #353e6c;
+  --color-text-page-title: #3c3f88;
+  --color-text-brand: #2c2745;
+  --color-text-muted: #baccfd;
+  --color-text-disabled: #b9c0de;
+  --color-text-on-accent: #ffffff;
+
+  --color-primary: #1657ff;
+  --color-link: #276bf0;
+  --color-live: #ff1010;
+  --color-brand-green: #30d354;
+  --color-tab-active-bg: #dcfaf8;
+  --color-tab-active-text: #16dbcc;
+  --color-win-bg: #fff5d9;
+  --color-win-text: #ffbb38;
+  --color-avatar-naomi-bg: #f6d3dc;
+
+  --color-ranking-singles: #f44771;
+  --color-ranking-doubles: #ff9a3e;
+  --color-ranking-mixed: #332a7c;
+  --color-ranking-motif: rgb(255 255 255 / 30%);
+
+  --color-profile-start: #5c24fc;
+  --color-profile-end: #9d7aff;
+  --color-year-purple-start: #4262fe;
+  --color-year-purple-end: #c059ff;
+  --color-year-pink-start: #f44771;
+  --color-year-pink-end: #fd29b5;
+  --color-donut-purple-start: #ce9ffc;
+  --color-donut-purple-end: #7367f0;
+  --color-donut-orange-start: #ffe985;
+  --color-donut-orange-end: #fa742b;
+  --color-donut-pink-start: #fff6b7;
+  --color-donut-pink-end: #f6416c;
+
+  --radius-dashboard-frame: 30px;
+  --radius-card: 30px;
+  --radius-ranking-card: 20px;
+  --radius-button: 15px;
+  --radius-badge: 5px;
+  --radius-chart-bar: 50px;
+
+  --shadow-card: 0 15px 40px rgb(222 222 222 / 10%);
+  --shadow-profile: 0 50px 80px rgb(102 30 255 / 20%);
+  --shadow-active-indicator: -2px 0 10px 2px rgb(0 56 255 / 15%);
+
+  --blur-dashboard-frame: 40px;
+  --blur-dashboard-sidebar: 80px;
+
+  --spacing-main-inset: 30px;
+  --spacing-primary-gap: 20px;
+  --spacing-ranking-gap: 25px;
+  --spacing-card-title-inset: 20px;
+  --spacing-compact-gap: 15px;
+
+  --width-dashboard-canvas: 1440px;
+  --height-dashboard-canvas: 900px;
+  --width-dashboard-sidebar: 300px;
+  --width-dashboard-content: 1140px;
+  --width-dashboard-left-column: 650px;
+  --width-dashboard-right-column: 400px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-ui);
+  --font-brand: var(--font-poppins), "Poppins", sans-serif;
+
+  --color-page-backdrop: var(--color-page-backdrop);
+  --color-frame-tint: var(--color-frame-tint);
+  --color-canvas-reference: var(--color-canvas-reference);
+  --color-surface: var(--color-surface);
+  --color-sidebar-surface: var(--color-sidebar-surface);
+  --color-promo-surface: var(--color-promo-surface);
+  --color-chart-track: var(--color-chart-track);
+  --color-text-strong: var(--color-text-strong);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-heading: var(--color-text-heading);
+  --color-text-page-title: var(--color-text-page-title);
+  --color-text-brand: var(--color-text-brand);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-disabled: var(--color-text-disabled);
+  --color-text-on-accent: var(--color-text-on-accent);
+  --color-primary: var(--color-primary);
+  --color-link: var(--color-link);
+  --color-live: var(--color-live);
+  --color-brand-green: var(--color-brand-green);
+  --color-tab-active-bg: var(--color-tab-active-bg);
+  --color-tab-active-text: var(--color-tab-active-text);
+  --color-win-bg: var(--color-win-bg);
+  --color-win-text: var(--color-win-text);
+  --color-avatar-naomi-bg: var(--color-avatar-naomi-bg);
+  --color-ranking-singles: var(--color-ranking-singles);
+  --color-ranking-doubles: var(--color-ranking-doubles);
+  --color-ranking-mixed: var(--color-ranking-mixed);
+  --color-ranking-motif: var(--color-ranking-motif);
+  --color-profile-start: var(--color-profile-start);
+  --color-profile-end: var(--color-profile-end);
+  --color-year-purple-start: var(--color-year-purple-start);
+  --color-year-purple-end: var(--color-year-purple-end);
+  --color-year-pink-start: var(--color-year-pink-start);
+  --color-year-pink-end: var(--color-year-pink-end);
+  --color-donut-purple-start: var(--color-donut-purple-start);
+  --color-donut-purple-end: var(--color-donut-purple-end);
+  --color-donut-orange-start: var(--color-donut-orange-start);
+  --color-donut-orange-end: var(--color-donut-orange-end);
+  --color-donut-pink-start: var(--color-donut-pink-start);
+  --color-donut-pink-end: var(--color-donut-pink-end);
+
+  --radius-dashboard-frame: var(--radius-dashboard-frame);
+  --radius-card: var(--radius-card);
+  --radius-ranking-card: var(--radius-ranking-card);
+  --radius-button: var(--radius-button);
+  --radius-badge: var(--radius-badge);
+  --radius-chart-bar: var(--radius-chart-bar);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-profile: var(--shadow-profile);
+  --shadow-active-indicator: var(--shadow-active-indicator);
+
+  --blur-dashboard-frame: var(--blur-dashboard-frame);
+  --blur-dashboard-sidebar: var(--blur-dashboard-sidebar);
+
+  --spacing-main-inset: var(--spacing-main-inset);
+  --spacing-primary-gap: var(--spacing-primary-gap);
+  --spacing-ranking-gap: var(--spacing-ranking-gap);
+  --spacing-card-title-inset: var(--spacing-card-title-inset);
+  --spacing-compact-gap: var(--spacing-compact-gap);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--color-page-backdrop);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100svh;
+  margin: 0;
+  background: var(--color-page-backdrop);
+  color: var(--color-text-primary);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+svg {
+  display: block;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: var(--color-text-on-accent);
 }
