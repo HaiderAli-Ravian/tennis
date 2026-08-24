@@ -50,7 +50,6 @@
   --color-donut-pink-start: #fff6b7;
   --color-donut-pink-end: #f6416c;
 
-  --radius-dashboard-frame: 30px;
   --radius-card: 30px;
   --radius-ranking-card: 20px;
   --radius-button: 15px;
@@ -123,7 +122,6 @@
   --color-donut-pink-start: var(--color-donut-pink-start);
   --color-donut-pink-end: var(--color-donut-pink-end);
 
-  --radius-dashboard-frame: var(--radius-dashboard-frame);
   --radius-card: var(--radius-card);
   --radius-ranking-card: var(--radius-ranking-card);
   --radius-button: var(--radius-button);
