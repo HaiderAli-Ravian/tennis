@@ -26,8 +26,7 @@ const donutGeometry = {
   center: 110,
   outerRadius: 100,
   innerRadius: 55,
-  middleRadius: 77.5,
-  capRadius: 22.5,
+  endCornerRadius: 10,
   startAngle: -90,
 } as const;
 
@@ -40,21 +39,48 @@ function pointOnCircle(radius: number, angleInDegrees: number) {
   };
 }
 
-function getAnnularSectorPath(startAngle: number, sweepAngle: number) {
+function getAnnularSectorPath(
+  startAngle: number,
+  sweepAngle: number,
+  roundStart = false,
+  roundEnd = false,
+) {
   const endAngle = startAngle + sweepAngle;
-  const outerStart = pointOnCircle(donutGeometry.outerRadius, startAngle);
-  const outerEnd = pointOnCircle(donutGeometry.outerRadius, endAngle);
-  const innerEnd = pointOnCircle(donutGeometry.innerRadius, endAngle);
-  const innerStart = pointOnCircle(donutGeometry.innerRadius, startAngle);
+  const cornerRadius = donutGeometry.endCornerRadius;
+  const angleForRadius = (radius: number) =>
+    (cornerRadius / radius) * (180 / Math.PI);
+  const point = (radius: number, angle: number) => {
+    const { x, y } = pointOnCircle(radius, angle);
+
+    return `${x} ${y}`;
+  };
+  const outerStartAngle =
+    startAngle + (roundStart ? angleForRadius(donutGeometry.outerRadius) : 0);
+  const outerEndAngle =
+    endAngle - (roundEnd ? angleForRadius(donutGeometry.outerRadius) : 0);
+  const innerEndAngle =
+    endAngle - (roundEnd ? angleForRadius(donutGeometry.innerRadius) : 0);
+  const innerStartAngle =
+    startAngle + (roundStart ? angleForRadius(donutGeometry.innerRadius) : 0);
   const largeArcFlag = sweepAngle > 180 ? 1 : 0;
 
   return [
-    `M ${outerStart.x} ${outerStart.y}`,
-    `A ${donutGeometry.outerRadius} ${donutGeometry.outerRadius} 0 ${largeArcFlag} 1 ${outerEnd.x} ${outerEnd.y}`,
-    `L ${innerEnd.x} ${innerEnd.y}`,
-    `A ${donutGeometry.innerRadius} ${donutGeometry.innerRadius} 0 ${largeArcFlag} 0 ${innerStart.x} ${innerStart.y}`,
+    `M ${point(donutGeometry.outerRadius - (roundStart ? cornerRadius : 0), startAngle)}`,
+    roundStart &&
+      `Q ${point(donutGeometry.outerRadius, startAngle)} ${point(donutGeometry.outerRadius, outerStartAngle)}`,
+    `A ${donutGeometry.outerRadius} ${donutGeometry.outerRadius} 0 ${largeArcFlag} 1 ${point(donutGeometry.outerRadius, outerEndAngle)}`,
+    roundEnd &&
+      `Q ${point(donutGeometry.outerRadius, endAngle)} ${point(donutGeometry.outerRadius - cornerRadius, endAngle)}`,
+    `L ${point(donutGeometry.innerRadius + (roundEnd ? cornerRadius : 0), endAngle)}`,
+    roundEnd &&
+      `Q ${point(donutGeometry.innerRadius, endAngle)} ${point(donutGeometry.innerRadius, innerEndAngle)}`,
+    `A ${donutGeometry.innerRadius} ${donutGeometry.innerRadius} 0 ${largeArcFlag} 0 ${point(donutGeometry.innerRadius, innerStartAngle)}`,
+    roundStart &&
+      `Q ${point(donutGeometry.innerRadius, startAngle)} ${point(donutGeometry.innerRadius + cornerRadius, startAngle)}`,
     "Z",
-  ].join(" ");
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 function GlobalStatisticDonut() {
@@ -68,7 +94,12 @@ function GlobalStatisticDonut() {
 
     return {
       ...segment,
-      path: getAnnularSectorPath(startAngle, sweepAngle),
+      path: getAnnularSectorPath(
+        startAngle,
+        sweepAngle,
+        index === 0,
+        index === items.length - 1,
+      ),
     };
   });
   const displayedPercentage = globalStatisticsData.segments.reduce(
@@ -76,13 +107,6 @@ function GlobalStatisticDonut() {
     0,
   );
   const winRate = Math.round(displayedPercentage);
-  const finalAngle =
-    donutGeometry.startAngle + (displayedPercentage / 100) * 360;
-  const firstCap = pointOnCircle(
-    donutGeometry.middleRadius,
-    donutGeometry.startAngle,
-  );
-  const lastCap = pointOnCircle(donutGeometry.middleRadius, finalAngle);
   const revealStyle = {
     "--donut-reveal-progress": displayedPercentage / 100,
   } as CSSProperties;
@@ -172,18 +196,6 @@ function GlobalStatisticDonut() {
               fill={donutPalette[sector.key].fill}
             />
           ))}
-          <circle
-            cx={firstCap.x}
-            cy={firstCap.y}
-            r={donutGeometry.capRadius}
-            fill={donutPalette[sectors[0].key].fill}
-          />
-          <circle
-            cx={lastCap.x}
-            cy={lastCap.y}
-            r={donutGeometry.capRadius}
-            fill={donutPalette[sectors[sectors.length - 1].key].fill}
-          />
         </g>
       </svg>
       <div className="chart-value-reveal absolute inset-0 flex flex-col items-center justify-center pt-[4px]">

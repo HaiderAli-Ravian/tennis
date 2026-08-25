@@ -30,14 +30,14 @@ function UpgradeCard() {
       />
       <p
         id="upgrade-card-title"
-        className="absolute top-[186px] left-[25px] z-20 w-[200px] text-center text-[15px]/[1.25] font-normal tracking-[0.5px] text-text-brand"
+        className="absolute top-[170px] left-[25px] z-20 w-[200px] text-center text-[15px]/[1.25] font-normal tracking-[0.5px] text-text-brand"
       >
         Upgrade to <strong className="font-bold text-primary">PRO</strong> for
         <br /> more features.
       </p>
-      <span className="absolute bottom-[15px] left-[10px] z-20 flex h-[54px] w-[230px] items-center justify-center rounded-button bg-primary text-[15px]/[1] font-medium tracking-[0.5px] text-text-on-accent">
+      <button className="absolute bottom-[15px] left-[10px] z-20 flex h-[54px] w-[230px] items-center justify-center rounded-button bg-primary text-[15px]/[1] font-medium tracking-[0.5px] text-text-on-accent">
         Upgrade
-      </span>
+      </button>
     </section>
   );
 }

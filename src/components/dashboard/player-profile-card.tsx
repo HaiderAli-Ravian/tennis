@@ -51,7 +51,7 @@ export function PlayerProfileCard() {
       />
 
       <div className="absolute top-[210px] left-[30px] z-20 w-[160px] text-text-primary max-[639px]:left-[20px] max-[639px]:w-[150px]">
-        <h3 className="text-[15px]/[1] font-semibold tracking-[0.5px]">
+        <h3 className="text-[15px]/[1] font-semibold tracking-[0.5px] mt-2">
           Biography
         </h3>
         <div className="mt-[10px] h-[60px] w-[50px] overflow-hidden rounded-[20px_10px_20px_10px] bg-avatar-biography-bg">
@@ -62,7 +62,7 @@ export function PlayerProfileCard() {
             height={60}
           />
         </div>
-        <dl className="mt-[12px] grid gap-[10px] text-[12px]/[1] font-semibold tracking-[0.5px]">
+        <dl className="mt-[16px] grid gap-[10px] text-[12px]/[1] font-semibold tracking-[0.5px]">
           <div className="flex gap-1">
             <dt>Age :</dt>
             <dd>27</dd>
@@ -81,7 +81,7 @@ export function PlayerProfileCard() {
           </div>
         </dl>
 
-        <div className="mt-[28px]">
+        <div className="mt-[32px]">
           <h3 className="text-[12px]/[1] font-semibold tracking-[0.5px]">
             Social Media
           </h3>

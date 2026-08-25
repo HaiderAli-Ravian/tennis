@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tennis Dashboard
+
+A responsive tennis dashboard built from the **Project For Showcase** Figma screen. The implementation focuses on visual fidelity, clean component boundaries, accessible interactions, and a production-oriented data-fetching architecture.
+
+## Live Demo
+
+[https://tennis-topaz-xi.vercel.app](https://tennis-topaz-xi.vercel.app)
+
+
+## Design Reference
+
+[Dashboard Tennis — Community](https://www.figma.com/design/d7s9PsFoX1KyJD0VzT9jlj/Dashboard-Tennis--Community-?node-id=1-4)
+
+## Features
+
+- Figma-accurate desktop dashboard
+- Responsive tablet and mobile layouts
+- Animated mobile navigation drawer
+- Route-based dashboard navigation with active states
+- Dynamic Live Score card backed by an internal Next.js API
+- Loading, error, retry, caching, and request-cancellation handling
+- Interactive yearly statistics with distinct datasets
+- Animated bar and donut charts rendered with SVG
+- Functional Latest Scores category tabs
+- Accessible labels, focus states, and keyboard navigation
+
+## Technology
+
+- Next.js 16 with the App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Axios
+- TanStack Query 5
+
+## Application Routes
+
+| Route | Description |
+| --- | --- |
+| `/` | Redirects to `/score` |
+| `/score` | Main tennis score dashboard |
+| `/all-games` | All Games placeholder page |
+| `/live-games` | Live Games placeholder page |
+| `/categories` | Categories placeholder page |
+| `/video` | Video placeholder page |
+| `/statistic` | Statistic placeholder page |
+
+The dashboard routes share a common App Router layout, keeping the sidebar and header consistent while route content changes through client-side navigation.
+
+## Live Score API
+
+```http
+GET /api/v1/live-score
+```
+
+The endpoint returns typed in-memory match data and does not require a database or external service.
+
+The frontend follows a focused three-layer data flow:
+
+```text
+Axios instance
+  → Live Score API service
+  → TanStack Query custom hook
+  → Live Score component
+```
+
+This keeps transport configuration, endpoint access, query state, and presentation concerns separate.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The root route automatically redirects to the Score dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+No environment variables are required for local development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available Scripts
 
-## Learn More
+```bash
+npm run dev       # Start the development server
+npm run lint      # Run ESLint
+npx tsc --noEmit  # Run the TypeScript compiler without emitting files
+npm run build     # Create a production build
+npm run start     # Start the production server
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+src/
+├── app/
+│   ├── (dashboard)/        # Shared dashboard layout and route pages
+│   ├── api/v1/live-score/  # Versioned internal API route
+│   └── providers.tsx       # Application-level query provider
+├── components/dashboard/   # Dashboard sections and visual components
+├── hooks/                  # TanStack Query hooks
+├── lib/                    # Shared configuration and in-memory data
+├── services/               # API service layer
+└── types/                  # Shared TypeScript contracts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+public/assets/dashboard/    # Figma-exported dashboard assets
+```
 
-## Deploy on Vercel
+## Production Validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Before deployment, run:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
+
+After deploying to Vercel, verify the dashboard routes, direct page refreshes, static assets, and `GET /api/v1/live-score` on the deployed domain.
