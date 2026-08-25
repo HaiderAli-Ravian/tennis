@@ -7,23 +7,29 @@ export function PlayerProfileCard() {
     <section
       data-slot="player-profile-card"
       aria-labelledby="player-profile-title"
-      className="relative rounded-card"
+      className="profile-shadow-overlap relative rounded-card"
     >
       <div className="absolute inset-0 z-0 overflow-hidden rounded-card bg-surface shadow-profile">
-        <div className="absolute inset-x-0 top-0 h-[155px] bg-[linear-gradient(135deg,var(--color-profile-start),var(--color-profile-end))]" />
-        <div className="absolute top-[120px] -left-[45px] h-[70px] w-[calc(100%+90px)] rounded-[50%] bg-[linear-gradient(135deg,var(--color-profile-start),var(--color-profile-end))]" />
+        <Image
+          src={`${assetRoot}/illustrations/biography-rectangle.svg`}
+          alt=""
+          width={400}
+          height={192}
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-[192px] w-full"
+        />
       </div>
 
-      <div className="absolute top-[42px] left-[30px] z-20">
+      <div className="absolute top-[42px] left-[30px] z-20 max-[639px]:top-[35px] max-[639px]:left-[20px]">
         <h2
           id="player-profile-title"
-          className="w-[185px] text-[30px]/[1.5] font-bold tracking-[0.5px] text-text-on-accent"
+          className="w-[185px] text-[30px]/[1.5] font-bold tracking-[0.5px] text-text-on-accent max-[639px]:w-[150px] max-[639px]:text-[24px]/[1.35]"
         >
           Anindita
           <br />
           Rahmawati
         </h2>
-        <div className="mt-[12px] flex items-center gap-[10px] text-[15px]/[1] font-semibold tracking-[0.5px] text-text-on-accent">
+        <div className="mt-[12px] flex items-center gap-[10px] text-[15px]/[1] font-semibold tracking-[0.5px] text-text-on-accent max-[639px]:text-[13px]">
           <Image
             src={`${assetRoot}/flags/indonesia.svg`}
             alt=""
@@ -41,20 +47,21 @@ export function PlayerProfileCard() {
         width={409}
         height={545}
         priority
-        className="absolute -top-[48px] right-[-75px] z-10 h-[545px] w-[409px] max-w-none"
+        className="absolute -top-[48px] right-[-75px] z-10 h-[545px] w-[409px] max-w-none max-[1439px]:-top-[20px] max-[639px]:top-0 max-[639px]:right-[-62px] max-[639px]:h-[440px] max-[639px]:w-[330px]"
       />
 
-      <div className="absolute top-[210px] left-[30px] z-20 w-[160px] text-text-primary">
+      <div className="absolute top-[210px] left-[30px] z-20 w-[160px] text-text-primary max-[639px]:left-[20px] max-[639px]:w-[150px]">
         <h3 className="text-[15px]/[1] font-semibold tracking-[0.5px]">
           Biography
         </h3>
-        <Image
-          src={`${assetRoot}/players/avatar-anindita-biography.svg`}
-          alt="Portrait of Anindita Rahmawati"
-          width={50}
-          height={60}
-          className="mt-[10px] rounded-badge"
-        />
+        <div className="mt-[10px] h-[60px] w-[50px] overflow-hidden rounded-[20px_10px_20px_10px] bg-avatar-biography-bg">
+          <Image
+            src={`${assetRoot}/players/avatar-anindita-biography.svg`}
+            alt="Portrait of Anindita Rahmawati"
+            width={50}
+            height={60}
+          />
+        </div>
         <dl className="mt-[12px] grid gap-[10px] text-[12px]/[1] font-semibold tracking-[0.5px]">
           <div className="flex gap-1">
             <dt>Age :</dt>

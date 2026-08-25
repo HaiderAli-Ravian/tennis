@@ -117,25 +117,6 @@ function RankingDecoration({ kind }: { readonly kind: RankingKind }) {
       preserveAspectRatio="xMidYMid slice"
       className="pointer-events-none absolute inset-0 size-full"
     >
-      <defs>
-        <clipPath id="mixed-ranking-lower-shape">
-          <rect
-            x="182"
-            y="68"
-            width="312"
-            height="156"
-            rx="78"
-          />
-        </clipPath>
-      </defs>
-      <rect
-        x="182"
-        y="68"
-        width="312"
-        height="156"
-        rx="78"
-        fill="#716AA4"
-      />
       <rect
         x="154"
         y="-120"
@@ -146,14 +127,13 @@ function RankingDecoration({ kind }: { readonly kind: RankingKind }) {
         fill="#7F77C5"
       />
       <rect
-        x="154"
-        y="-120"
+        x="182"
+        y="68"
         width="312"
         height="156"
         rx="78"
-        transform="rotate(-60 310 -42)"
-        fill="#A5A0D6"
-        clipPath="url(#mixed-ranking-lower-shape)"
+        fill="white"
+        fillOpacity="0.3"
       />
       <rect
         x="13"
@@ -174,14 +154,17 @@ function RankingDecoration({ kind }: { readonly kind: RankingKind }) {
 
 export function RankingsSection() {
   return (
-    <section aria-labelledby="rankings-title" className="grid grid-rows-[70px_100px]">
+    <section
+      aria-labelledby="rankings-title"
+      className="grid grid-rows-[70px_100px] max-[1439px]:grid-rows-[70px_auto]"
+    >
       <h2
         id="rankings-title"
         className="self-center text-[20px]/[1] font-bold tracking-[0.5px] text-text-heading"
       >
         Rankings
       </h2>
-      <div className="grid grid-cols-[repeat(3,minmax(200px,1fr))] gap-x-[25px]">
+      <div className="grid grid-cols-[repeat(3,minmax(200px,1fr))] gap-x-[25px] max-[819px]:grid-cols-2 max-[819px]:gap-[16px] max-[519px]:grid-cols-1">
         {rankings.map((ranking, index) => (
           <article
             key={ranking.label}
@@ -192,7 +175,7 @@ export function RankingsSection() {
                   ? "doubles-ranking-card"
                   : "mixed-ranking-card"
             }
-            className={`relative overflow-hidden rounded-ranking-card ${ranking.colorClass} text-text-on-accent`}
+            className={`relative overflow-hidden rounded-ranking-card ${ranking.colorClass} text-text-on-accent max-[1439px]:h-[120px] max-[519px]:h-[130px] ${index === 2 ? "max-[819px]:col-span-2 max-[819px]:w-[calc(50%-8px)] max-[819px]:justify-self-center max-[519px]:col-span-1 max-[519px]:w-full" : ""}`}
           >
             <RankingDecoration kind={ranking.label} />
 

@@ -1,22 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { dashboardNavigationItems } from "@/lib/dashboard-navigation";
 
 const assetRoot = "/assets/dashboard";
-
-interface NavigationItem {
-  readonly label: string;
-  readonly icon: string;
-  readonly live?: boolean;
-  readonly active?: boolean;
-}
-
-const navigationItems: readonly NavigationItem[] = [
-  { label: "All games", icon: "all-games.svg" },
-  { label: "Live Games", icon: "live-games.svg", live: true },
-  { label: "Score", icon: "score.svg", active: true },
-  { label: "Categories", icon: "categories.svg" },
-  { label: "Video", icon: "video.svg" },
-  { label: "Statistic", icon: "statistic.svg" },
-] as const;
 
 function UpgradeCard() {
   return (
@@ -52,7 +42,13 @@ function UpgradeCard() {
   );
 }
 
-export function DashboardSidebar() {
+interface DashboardSidebarProps {
+  readonly onNavigate?: () => void;
+}
+
+export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
+  const pathname = usePathname();
+
   return (
     <aside
       data-slot="dashboard-sidebar"
@@ -77,38 +73,73 @@ export function DashboardSidebar() {
         className="absolute top-[138px] left-[40px] w-[260px]"
       >
         <ul className="grid list-none gap-[46px] p-0">
-          {navigationItems.map((item) => (
-            <li
-              key={item.label}
-              className={`relative flex h-[20px] items-center gap-[15px] text-[15px]/[1] font-normal tracking-[1px] ${
-                item.active ? "text-primary" : "text-text-disabled"
-              }`}
-            >
-              <span className="flex size-[20px] items-center justify-center">
-                <Image
-                  src={`${assetRoot}/icons/navigation/${item.icon}`}
-                  alt=""
-                  width={20}
-                  height={20}
-                  aria-hidden="true"
-                />
-              </span>
-              <span aria-current={item.active ? "page" : undefined}>
-                {item.label}
-              </span>
-              {item.live ? (
-                <span className="ml-[-5px] flex h-[15px] w-[30px] items-center justify-center rounded-badge bg-live text-[8px]/[1] font-semibold tracking-[0.5px] text-text-on-accent">
-                  LIVE
-                </span>
-              ) : null}
-              {item.active ? (
-                <span
-                  aria-hidden="true"
-                  className="absolute top-[-5px] right-0 h-[30px] w-[5px] rounded-l-[5px] bg-primary shadow-active-indicator"
-                />
-              ) : null}
-            </li>
-          ))}
+          {dashboardNavigationItems.map((item) => {
+            const isActive =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+            return (
+              <li key={item.href} className="relative h-[20px]">
+                <Link
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={onNavigate}
+                  className={`flex h-[20px] w-full items-center gap-[15px] text-[15px]/[1] font-normal tracking-[1px] transition-colors duration-150 motion-reduce:transition-none ${
+                    isActive
+                      ? "text-primary"
+                      : "text-text-disabled hover:text-text-page-title"
+                  }`}
+                >
+                  <span
+                    className={`flex size-[20px] items-center justify-center transition-opacity duration-150 motion-reduce:transition-none ${
+                      isActive ? "opacity-100" : "opacity-70"
+                    }`}
+                  >
+                    {!isActive && item.href === "/score" ? (
+                      <span
+                        aria-hidden="true"
+                        className="size-[20px] bg-text-disabled"
+                        style={{
+                          WebkitMaskImage: `url(${assetRoot}/icons/navigation/${item.icon})`,
+                          WebkitMaskPosition: "center",
+                          WebkitMaskRepeat: "no-repeat",
+                          WebkitMaskSize: "contain",
+                          maskImage: `url(${assetRoot}/icons/navigation/${item.icon})`,
+                          maskPosition: "center",
+                          maskRepeat: "no-repeat",
+                          maskSize: "contain",
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        src={`${assetRoot}/icons/navigation/${item.icon}`}
+                        alt=""
+                        width={20}
+                        height={20}
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
+                  <span>{item.label}</span>
+                  {item.live ? (
+                    <Image
+                      src={`${assetRoot}/icons/navigation/live-badge.svg`}
+                      alt=""
+                      width={30}
+                      height={15}
+                      aria-hidden="true"
+                      className="ml-[-5px]"
+                    />
+                  ) : null}
+                </Link>
+                {isActive ? (
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-[-5px] right-0 h-[30px] w-[5px] rounded-l-[5px] bg-primary shadow-active-indicator"
+                  />
+                ) : null}
+              </li>
+            );
+          })}
         </ul>
       </nav>
 

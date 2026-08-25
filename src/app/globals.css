@@ -31,6 +31,8 @@
   --color-win-bg: #fff5d9;
   --color-win-text: #ffbb38;
   --color-avatar-naomi-bg: #f6d3dc;
+  --color-avatar-anindita-bg: #ffe7c2;
+  --color-avatar-biography-bg: #ffc2f9;
 
   --color-ranking-singles: #f44771;
   --color-ranking-doubles: #ff9a3e;
@@ -105,6 +107,8 @@
   --color-win-bg: var(--color-win-bg);
   --color-win-text: var(--color-win-text);
   --color-avatar-naomi-bg: var(--color-avatar-naomi-bg);
+  --color-avatar-anindita-bg: var(--color-avatar-anindita-bg);
+  --color-avatar-biography-bg: var(--color-avatar-biography-bg);
   --color-ranking-singles: var(--color-ranking-singles);
   --color-ranking-doubles: var(--color-ranking-doubles);
   --color-ranking-mixed: var(--color-ranking-mixed);
@@ -188,4 +192,128 @@ svg {
 ::selection {
   background: var(--color-primary);
   color: var(--color-text-on-accent);
+}
+
+@keyframes chart-bar-grow {
+  from {
+    opacity: 0.2;
+    transform: scaleY(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes donut-chart-draw {
+  from {
+    stroke-dasharray: 0 1;
+  }
+
+  to {
+    stroke-dasharray: var(--donut-reveal-progress, 0.75) 1;
+  }
+}
+
+@keyframes chart-content-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes chart-legend-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes score-tab-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chart-bar-reveal {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: chart-bar-grow 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.donut-chart-reveal {
+  stroke-dasharray: 0 1;
+  animation: donut-chart-draw 1200ms cubic-bezier(0.22, 1, 0.36, 1) 100ms
+    forwards;
+}
+
+.chart-value-reveal {
+  opacity: 0;
+  animation: chart-content-enter 450ms ease-out 850ms forwards;
+}
+
+.score-tab-content-reveal {
+  animation: score-tab-content-enter 160ms ease-out both;
+}
+
+.score-category-tab {
+  padding: 5px 8px;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+@media (width >= 1440px) {
+  .profile-shadow-overlap {
+    z-index: 10;
+  }
+}
+
+@media (width < 640px) {
+  .score-category-tab {
+    font-size: 13px;
+    line-height: 13px;
+  }
+}
+
+.chart-legend-reveal {
+  opacity: 0;
+  animation: chart-legend-enter 350ms ease-out 1000ms forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-bar-reveal {
+    opacity: 1;
+    transform: scaleY(1);
+    animation: none;
+  }
+
+  .donut-chart-reveal {
+    stroke-dasharray: var(--donut-reveal-progress, 0.75) 1;
+    animation: none;
+  }
+
+  .chart-value-reveal,
+  .chart-legend-reveal,
+  .score-tab-content-reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
 }
