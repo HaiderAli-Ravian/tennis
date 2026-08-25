@@ -1,31 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
 
+import { useLiveScore } from "@/hooks/use-live-score";
 import type { LiveScoreResponse } from "@/types/live-score";
 
 const assetRoot = "/assets/dashboard";
-
-function isLiveScoreResponse(value: unknown): value is LiveScoreResponse {
-  if (!value || typeof value !== "object" || !("match" in value)) {
-    return false;
-  }
-
-  const match = (value as { match?: unknown }).match;
-
-  return Boolean(
-    match &&
-      typeof match === "object" &&
-      "cardLabel" in match &&
-      typeof match.cardLabel === "string" &&
-      "statusLabel" in match &&
-      typeof match.statusLabel === "string" &&
-      "players" in match &&
-      Array.isArray(match.players) &&
-      match.players.length === 2,
-  );
-}
 
 function MatchLoadingState() {
   return (
@@ -174,60 +154,13 @@ function MatchContent({ data }: { readonly data: LiveScoreResponse }) {
 }
 
 export function LiveScoreCard() {
-  const [data, setData] = useState<LiveScoreResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [requestKey, setRequestKey] = useState(0);
-
-  const retry = useCallback(() => {
-    setData(null);
-    setError(null);
-    setRequestKey((value) => value + 1);
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadScore() {
-      try {
-        const response = await fetch("/api/live-score", {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Live score request failed with ${response.status}`);
-        }
-
-        const payload: unknown = await response.json();
-
-        if (!isLiveScoreResponse(payload)) {
-          throw new Error("Live score response is invalid");
-        }
-
-        setData(payload);
-      } catch (requestError) {
-        if (controller.signal.aborted) {
-          return;
-        }
-
-        setError(
-          requestError instanceof Error
-            ? requestError.message
-            : "Unable to load the live score",
-        );
-      }
-    }
-
-    void loadScore();
-
-    return () => controller.abort();
-  }, [requestKey]);
+  const { data, error, isPending, refetch } = useLiveScore();
 
   return (
     <section
       data-slot="next-match-card"
       aria-labelledby="next-match-title"
-      aria-busy={!data && !error}
+      aria-busy={isPending}
       className="relative overflow-hidden rounded-card bg-surface shadow-card"
     >
       <span role="status" aria-atomic="true" className="sr-only">
@@ -254,7 +187,7 @@ export function LiveScoreCard() {
           </p>
           <button
             type="button"
-            onClick={retry}
+            onClick={() => void refetch()}
             className="rounded-badge bg-primary px-[14px] py-[8px] text-[12px]/[1] font-semibold text-text-on-accent"
           >
             Retry
